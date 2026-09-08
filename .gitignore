@@ -91,3 +91,4 @@ playwright-report/
 .cache/
 .parcel-cache/
 .eslintcache
+PROJECT_PROGRESS.md

@@ -1,6 +1,11 @@
-version: '3.8'
-
 services:
+  mongodb:
+    image: mongo:8
+    ports:
+      - "27017:27017"
+    volumes:
+      - alerto-mongodb:/data/db
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
     environment:
@@ -19,3 +24,6 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+volumes:
+  alerto-mongodb:

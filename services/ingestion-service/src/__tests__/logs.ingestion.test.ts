@@ -3,18 +3,21 @@ import app from "../app";
 import { kafkaProducerService } from "../services/kafkaProducer.service";
 import { LogRepository } from "../repositories/log.repository";
 
-jest.mock('../services/kafkaProducer.service', () => {
+jest.mock('../services/kafkaProducer.service', () => ({
   kafkaProducerService: {
-    publishLogs: jest.fn().mockResolvedValue(undefined);
-    connect: jest.fn();
-  }
-});
+    publishLogs: jest.fn().mockResolvedValue(undefined),
+    connect: jest.fn(),
+  },
+}));
 
-jest.mock('../repositories/log.repository', () => {
+jest.mock('../repositories/log.repository', () => ({
   LogRepository: jest.fn().mockImplementation(() => {
-    insertMany: jest.fn().mockResolvedValue({})
-  })
-})
+    return { insertMany: jest.fn().mockResolvedValue({}) };
+  }),
+  InMemoryLogRepository: jest.fn().mockImplementation(() => ({
+    insertMany: jest.fn().mockResolvedValue(undefined),
+  })),
+}));
 
 describe('POST /v1/logs', () => {
   it('accepts valid log batch and returns 202', async () => {
